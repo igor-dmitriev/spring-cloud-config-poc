@@ -1,4 +1,4 @@
-package com.config.server;
+package com.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,10 +12,10 @@ public class PropertyUtil {
 
   }
 
-  public static void updateProperty(String propertyName, String newValue) throws IOException {
-    Properties properties = loadProperties(new File(CustomEnvironmentRepository.PATH));
+  public static void updateProperty(String path, String propertyName, String newValue) throws IOException {
+    Properties properties = loadProperties(new File(path));
     properties.setProperty(propertyName, newValue);
-    try (FileOutputStream os = new FileOutputStream(CustomEnvironmentRepository.PATH)) {
+    try (FileOutputStream os = new FileOutputStream(path)) {
       properties.store(os, null);
     }
   }
