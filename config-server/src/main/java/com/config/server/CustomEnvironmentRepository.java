@@ -1,6 +1,7 @@
 package com.config.server;
 
 import com.util.PropertyUtil;
+import com.util.RepositoryPath;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,7 +21,6 @@ import static java.util.stream.Collectors.toList;
 
 public class CustomEnvironmentRepository implements EnvironmentRepository {
 
-  public static final String PATH = "repository.properties";
   private static final String DEFAULT = "default";
   private static Log logger = LogFactory.getLog(CustomEnvironmentRepository.class);
   private MapFlattener mapFlattener = new MapFlattener();
@@ -28,7 +28,7 @@ public class CustomEnvironmentRepository implements EnvironmentRepository {
   @Override
   public Environment findOne(String name, String profile, String label) {
     String[] profilesArr = StringUtils.commaDelimitedListToStringArray(profile);
-    File file = new File(PATH);
+    File file = new File(RepositoryPath.HARDCODED_PATH);
     Properties properties = PropertyUtil.loadProperties(file);
     logger.info("Properties loaded " + properties);
     List<CustomPropertySource> sources = properties.entrySet()

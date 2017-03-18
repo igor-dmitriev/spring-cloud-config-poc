@@ -4,6 +4,7 @@ package client;
 import com.client.Client;
 import com.config.server.ConfigServer;
 import com.util.PropertyUtil;
+import com.util.RepositoryPath;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -29,7 +30,6 @@ public class ApplicationTestWithCustomRepositoryTest {
 
   public static final String KEY = "testKey";
   private static final String VALUE = "first";
-  private static final String PATH = "repository.properties";
   private static int configPort = 8888;
   private static ConfigurableApplicationContext server;
   private static String backup;
@@ -37,7 +37,7 @@ public class ApplicationTestWithCustomRepositoryTest {
 
   @BeforeClass
   public static void startConfigServer() throws IOException {
-    backup = PropertyUtil.loadProperties(new File(PATH)).getProperty(KEY);
+    backup = PropertyUtil.loadProperties(new File(RepositoryPath.HARDCODED_PATH)).getProperty(KEY);
     updateProperty(KEY, VALUE);
     startConfServer();
   }
@@ -48,7 +48,7 @@ public class ApplicationTestWithCustomRepositoryTest {
   }
 
   private static void updateProperty(String key, String value) throws IOException {
-    PropertyUtil.updateProperty(PATH, key, value);
+    PropertyUtil.updateProperty(RepositoryPath.HARDCODED_PATH, key, value);
   }
 
   private static void startConfServer() throws IOException {
@@ -67,7 +67,7 @@ public class ApplicationTestWithCustomRepositoryTest {
     System.out.println(testValue);
     assertEquals(VALUE, testValue);
 
-    PropertyUtil.updateProperty(PATH, KEY, "second");
+    PropertyUtil.updateProperty(RepositoryPath.HARDCODED_PATH, KEY, "second");
 
     refreshBeans(); // refresh all beans with @RefreshScope manually
 
