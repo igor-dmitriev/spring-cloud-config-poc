@@ -8,7 +8,7 @@ Instructions
    - get testKey's value:
 curl localhost:8080/value 
 
-   - update testKey's value in custom.properties file
+   - update testKey's value in repository.properties file
 
    - refresh testKey property:
 curl -d {} http://localhost:8080/refresh
