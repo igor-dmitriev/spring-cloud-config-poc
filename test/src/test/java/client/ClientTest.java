@@ -10,6 +10,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -26,17 +27,20 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Client.class)
 @WebIntegrationTest(randomPort = true)
-public class ApplicationTestWithCustomRepositoryTest {
+public class ClientTest {
 
   public static final String KEY = "testKey";
   private static final String VALUE = "first";
-  private static int configPort = 8888;
+  private static int configPort = 0;
   private static ConfigurableApplicationContext server;
   private static String backup;
-  private int port = 8080;
+
+  @Value("${local.server.port}")
+  Integer port;
 
   @BeforeClass
   public static void startConfigServer() throws IOException {
+    System.setProperty("spring.cloud.config.enabled", "true");
     backup = PropertyUtil.loadProperties(new File(RepositoryPath.HARDCODED_PATH)).getProperty(KEY);
     updateProperty(KEY, VALUE);
     startConfServer();
@@ -45,6 +49,10 @@ public class ApplicationTestWithCustomRepositoryTest {
   @AfterClass
   public static void revertProperty() throws IOException {
     updateProperty(KEY, backup);
+    System.clearProperty("config.port");
+    if (server != null) {
+      server.close();
+    }
   }
 
   private static void updateProperty(String key, String value) throws IOException {
@@ -52,10 +60,12 @@ public class ApplicationTestWithCustomRepositoryTest {
   }
 
   private static void startConfServer() throws IOException {
-    server = SpringApplication.run(ConfigServer.class,
+    server = SpringApplication.run(
+        ConfigServer.class,
         "--server.port=" + configPort,
         "--spring.config.name=server",
-        "--spring.profiles.active=custom");
+        "--spring.profiles.active=custom"
+    );
     configPort = ((EmbeddedWebApplicationContext) server)
         .getEmbeddedServletContainer().getPort();
     System.setProperty("config.port", "" + configPort);
