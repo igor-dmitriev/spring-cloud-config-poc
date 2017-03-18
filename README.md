@@ -1,9 +1,9 @@
 Instructions
 
 1. take a look at ApplicationTestWithCustomRepositoryTest
-2. - run ConfigServerApplication
+2. - run ConfigServer
    
-   - run Application
+   - run Client
 
    - get testKey's value:
 curl localhost:8080/value 
@@ -20,7 +20,7 @@ curl localhost:8080/value
 
 
 DOCS:
-https://github.com/spring-cloud-incubator/spring-cloud-config-server-mongodb/commit/ecedae00e22978155606cf17ca1f2c3279769aff#diff-b109c993c15a6bd4f1aceeb3716c7a85
+https://github.com/spring-cloud-incubator/spring-cloud-config-server-mongodb/commit/ecedae00e22978155606cf17ca1f2c3279769aff#diff-b109c993c15a6bd4f1aceeb3716c7a85 MongoDB Environment Repository
 
 http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html
 
